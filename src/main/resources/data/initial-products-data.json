@@ -1,0 +1,18 @@
+[
+  {
+    "id": null,
+    "name": "Caffee",
+    "productSize": "SMALL",
+    "productType": "HOT_DRINK",
+    "price": 3.20,
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/1200px-Good_Food_Display_-_NCI_Visuals_Online.jpg"
+  },
+  {
+    "id": null,
+    "name": "Caffee2",
+    "productSize": "LARGE",
+    "productType": "COLD_DRINK",
+    "price": 3.60,
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Nice_Cup_of_Tea.jpg/390px-Nice_Cup_of_Tea.jpg"
+  }
+]

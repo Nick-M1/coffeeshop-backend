@@ -1,0 +1,116 @@
+scalar DateTime
+scalar BigDecimal
+
+
+# MODELS:
+type Product {
+    id: ID!
+    name: String
+    productSize: ProductSize
+    productType: ProductType
+    price: BigDecimal
+    img: String
+}
+
+type User {
+    id: ID!
+    username: String
+    password: String
+    role: Role
+}
+
+type TransactionItem {
+    id: ID!
+    product: Product
+    quantity: Int
+}
+
+type Transaction {
+    id: ID!
+    transactionItems: [TransactionItem]
+    timestamp: DateTime
+    user: User
+}
+
+
+# FOR PAGINATION
+type Pageable {
+    offset: Int
+    pageNumber: Int
+    pageSize: Int
+}
+
+type ProductResponse {          # todo: DO SAME FOR Transactions
+    content: [Product!]!
+    pageable: Pageable
+    empty: Boolean
+    first: Boolean
+    last: Boolean
+    number: Int
+    numberOfElements: Int
+    totalElements: Int
+    totalPages: Int
+}
+
+
+# INPUTS
+input TransactionInput {
+    productId: ID
+    quantity: Int
+}
+
+input ProductFilter {
+    name: String
+    productSize: ProductSize
+    productType: ProductType
+    price: BigDecimal
+    img: String
+}
+
+
+
+
+# ENUMS
+enum ProductSize {
+   SMALL, MEDIUM, LARGE
+}
+
+enum ProductType {
+    HOT_FOOD, COLD_FOOD, HOT_DRINK, COLD_DRINK, SWEET_TREATS
+}
+
+enum Role {
+    ADMIN, CUSTOMER
+}
+
+enum SortBy {
+    NAME_ASC
+    NAME_DSC
+    PRICE_ASC
+    PRICE_DSC
+}
+
+
+# QUERIES
+type Query {
+    findAllProduct: [Product]!
+    findAllProductByExample(example: ProductFilter, sortBy: SortBy, page: Int, size: Int): ProductResponse
+    findOneProduct(id: ID!): Product
+
+
+    findAllTransaction: [Transaction]!
+    findAllTransactionByUser: [Transaction]!
+    findOneTransaction(id: ID!): Transaction
+}
+
+
+# MUTATIONS
+type Mutation {
+    createProduct(name: String, productSize: ProductSize, productType: ProductType): Product
+    updateProduct(id: ID!, name: String, productSize: ProductSize, productType: ProductType): Product
+    deleteProduct(id: ID!): Product
+
+    createTransaction(transactionInput: [TransactionInput]): Transaction
+    updateTransaction(id: ID!, transactionInput: [TransactionInput]): Transaction
+    deleteTransaction(id: ID!): Transaction
+}
