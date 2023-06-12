@@ -2,8 +2,8 @@ package com.nick.coffeeshop.service;
 
 import com.nick.coffeeshop.config.properties.PageableConfigProps;
 import com.nick.coffeeshop.enums.ProductSize;
+import com.nick.coffeeshop.enums.ProductSortBy;
 import com.nick.coffeeshop.enums.ProductType;
-import com.nick.coffeeshop.enums.SortBy;
 import com.nick.coffeeshop.exception.ResourceNotFoundException;
 import com.nick.coffeeshop.model.Product;
 import com.nick.coffeeshop.model.filter.ProductFilter;
@@ -38,7 +38,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Page<Product> findAllByExample(Optional<ProductFilter> productExampleOptional, Optional<SortBy> sortBy, Optional<Integer> page, Optional<Integer> size) {
+    public Page<Product> findAllByExample(Optional<ProductFilter> productExampleOptional, Optional<ProductSortBy> sortBy, Optional<Integer> page, Optional<Integer> size) {
         var productExample = productExampleOptional.orElse(new ProductFilter(null, null, null, null, null));
 
         Example<Product> example = Example.of(
@@ -46,7 +46,7 @@ public class ProductService {
                 exampleMatcher
         );
 
-        var sortRequest = SortBy.getSortRequest(sortBy.orElse(SortBy.NAME_ASC));
+        var sortRequest = ProductSortBy.getSortRequest(sortBy.orElse(ProductSortBy.NAME_ASC));
         var pageRequest = PageRequest.of(page.orElse(pageableConfigProps.defaultPageIndex()), size.orElse(pageableConfigProps.defaultPageSize()), sortRequest);
 
         return productRepository.findAll(example, pageRequest);
@@ -68,16 +68,16 @@ public class ProductService {
     }
 
     @Transactional
-    public Product update(Long id, String name, ProductSize productSize, ProductType productType) {
+    public Product update(Long id, Optional<String> name, Optional<ProductSize> productSize, Optional<ProductType> productType) {
         var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
 
-        if (name != null && !name.equals(product.getName()))
-            product.setName(name);
-        if (productSize != null && productSize != product.getProductSize())
-            product.setProductSize(productSize);
-        if (productType != null && productType != product.getProductType())
-            product.setProductType(productType);
+        if (name.isPresent() && !name.get().equals(product.getName()))
+            product.setName(name.get());
+        if (productSize.isPresent() && productSize.get() != product.getProductSize())
+            product.setProductSize(productSize.get());
+        if (productType.isPresent() && productType.get() != product.getProductType())
+            product.setProductType(productType.get());
 
         return product;
     }

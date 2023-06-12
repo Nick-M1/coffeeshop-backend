@@ -3,12 +3,14 @@ package com.nick.coffeeshop.model;
 import com.nick.coffeeshop.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "user_table")
 public class User implements UserDetails {
@@ -27,9 +29,6 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public User() {
-
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

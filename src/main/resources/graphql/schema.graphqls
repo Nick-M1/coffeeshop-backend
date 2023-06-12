@@ -40,8 +40,32 @@ type Pageable {
     pageSize: Int
 }
 
-type ProductResponse {          # todo: DO SAME FOR Transactions
+type ProductResponse {
     content: [Product!]!
+    pageable: Pageable
+    empty: Boolean
+    first: Boolean
+    last: Boolean
+    number: Int
+    numberOfElements: Int
+    totalElements: Int
+    totalPages: Int
+}
+
+type TransactionResponse {
+    content: [Transaction!]!
+    pageable: Pageable
+    empty: Boolean
+    first: Boolean
+    last: Boolean
+    number: Int
+    numberOfElements: Int
+    totalElements: Int
+    totalPages: Int
+}
+
+type UserResponse {
+    content: [User!]!
     pageable: Pageable
     empty: Boolean
     first: Boolean
@@ -67,6 +91,11 @@ input ProductFilter {
     img: String
 }
 
+input UserFilter {
+    username: String
+    role: Role
+}
+
 
 
 
@@ -79,28 +108,36 @@ enum ProductType {
     HOT_FOOD, COLD_FOOD, HOT_DRINK, COLD_DRINK, SWEET_TREATS
 }
 
-enum Role {
-    ADMIN, CUSTOMER
-}
-
-enum SortBy {
+enum ProductSortBy {
     NAME_ASC
     NAME_DSC
     PRICE_ASC
     PRICE_DSC
 }
 
+enum Role {
+    ADMIN, CUSTOMER
+}
+
+enum UserSortBy {
+    USERNAME_ASC
+    USERNAME_DSC
+    ROLE_ASC
+    ROLE_DSC
+}
+
 
 # QUERIES
 type Query {
-    findAllProduct: [Product]!
-    findAllProductByExample(example: ProductFilter, sortBy: SortBy, page: Int, size: Int): ProductResponse
+    findAllProducts(example: ProductFilter, sortBy: ProductSortBy, page: Int, size: Int): ProductResponse
     findOneProduct(id: ID!): Product
 
-
-    findAllTransaction: [Transaction]!
-    findAllTransactionByUser: [Transaction]!
+    findAllTransactions(page: Int, size: Int): TransactionResponse
+    findAllTransactionsByUser(page: Int, size: Int): TransactionResponse
     findOneTransaction(id: ID!): Transaction
+
+    findAllUsers(example: UserFilter, sortBy: UserSortBy, page: Int, size: Int): UserResponse
+    findOneUser(id: ID!): User
 }
 
 
@@ -113,4 +150,8 @@ type Mutation {
     createTransaction(transactionInput: [TransactionInput]): Transaction
     updateTransaction(id: ID!, transactionInput: [TransactionInput]): Transaction
     deleteTransaction(id: ID!): Transaction
+
+    createUser(name: String, username: String, password: String, role: Role): User
+    updateUser(id: ID!, name: String, username: String, role: Role): User
+    deleteUser(id: ID!): User
 }

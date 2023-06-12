@@ -1,8 +1,8 @@
 package com.nick.coffeeshop.controller;
 
 import com.nick.coffeeshop.enums.ProductSize;
+import com.nick.coffeeshop.enums.ProductSortBy;
 import com.nick.coffeeshop.enums.ProductType;
-import com.nick.coffeeshop.enums.SortBy;
 import com.nick.coffeeshop.model.Product;
 import com.nick.coffeeshop.model.filter.ProductFilter;
 import com.nick.coffeeshop.service.ProductService;
@@ -32,14 +32,9 @@ public class ProductController {
 
 
     @QueryMapping
-    public List<Product> findAllProduct() {
-        return productService.findAll();
-    }
-
-    @QueryMapping
-    public Page<Product> findAllProductByExample(
+    public Page<Product> findAllProducts(
             @Argument Optional<ProductFilter> example,
-            @Argument Optional<SortBy> sortBy,
+            @Argument Optional<ProductSortBy> sortBy,
             @Argument Optional<@PositiveOrZero Integer> page,
             @Argument Optional<@Positive Integer> size) {
         return productService.findAllByExample(example, sortBy, page, size);
@@ -57,14 +52,18 @@ public class ProductController {
             @Argument @Size(min = 2, max = 50) String name,
             @Argument ProductSize productSize,
             @Argument ProductType productType,
-            @Argument BigDecimal price,
+            @Argument @PositiveOrZero BigDecimal price,
             @Argument String img) {
         return productService.create(name, productSize, productType, price, img);
     }
 
     @MutationMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Product updateProduct(@Argument @PositiveOrZero Long id, @Argument @Size(min = 2, max = 50) String name, @Argument ProductSize productSize, @Argument ProductType productType) {
+    public Product updateProduct(
+            @Argument @PositiveOrZero Long id,
+            @Argument Optional<@Size(min = 2, max = 50) String> name,
+            @Argument Optional<ProductSize> productSize,
+            @Argument Optional<ProductType> productType) {
         return productService.update(id, name, productSize, productType);
     }
 
