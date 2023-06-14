@@ -1,0 +1,12 @@
+schema: schema.graphqls
+extensions:
+  Default GraphQL Endpoint:
+    url: http://localhost:8080/graphql
+    headers:
+      user-agent: JS GraphQL
+  introspect: false
+
+  config:
+    scalars:
+      DateTime: string
+      BigDecimal: number
