@@ -3,7 +3,7 @@
 ## This project uses:
 - Spring for Graphql
 - In-memory H2 database
-- Spring security
+- Spring security (_role based auth_)
 - Spring testing
 
 
