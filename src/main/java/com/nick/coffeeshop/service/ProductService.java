@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,10 +31,6 @@ public class ProductService {
         this.productRepository = productRepository;
         this.exampleMatcher = exampleMatcher;
         this.pageableConfigProps = pageableConfigProps;
-    }
-
-    public List<Product> findAll() {
-        return productRepository.findAll();
     }
 
     public Page<Product> findAllByExample(Optional<ProductFilter> productExampleOptional, Optional<ProductSortBy> sortBy, Optional<Integer> page, Optional<Integer> size) {
@@ -68,7 +63,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Product update(Long id, Optional<String> name, Optional<ProductSize> productSize, Optional<ProductType> productType) {
+    public Product update(Long id, Optional<String> name, Optional<ProductSize> productSize, Optional<ProductType> productType, Optional<BigDecimal> price, Optional<String> img) {
         var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
 
@@ -78,6 +73,10 @@ public class ProductService {
             product.setProductSize(productSize.get());
         if (productType.isPresent() && productType.get() != product.getProductType())
             product.setProductType(productType.get());
+        if (price.isPresent() && !price.get().equals(product.getPrice()))
+            product.setPrice(price.get());
+        if (img.isPresent() && !img.get().equals(product.getImg()))
+            product.setImg(img.get());
 
         return product;
     }

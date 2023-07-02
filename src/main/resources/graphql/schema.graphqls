@@ -143,15 +143,15 @@ type Query {
 
 # MUTATIONS
 type Mutation {
-    createProduct(name: String, productSize: ProductSize, productType: ProductType): Product
-    updateProduct(id: ID!, name: String, productSize: ProductSize, productType: ProductType): Product
+    createProduct(name: String!, productSize: ProductSize!, productType: ProductType!, price: BigDecimal!, img: String!): Product
+    updateProduct(id: ID!, name: String, productSize: ProductSize, productType: ProductType, price: BigDecimal, img: String): Product
     deleteProduct(id: ID!): Product
 
     createTransaction(transactionInput: [TransactionInput]): Transaction
     updateTransaction(id: ID!, transactionInput: [TransactionInput]): Transaction
     deleteTransaction(id: ID!): Transaction
 
-    createUser(name: String, username: String, password: String, role: Role): User
+    createUser(name: String!, username: String!, password: String!, role: Role!): User
     updateUser(id: ID!, name: String, username: String, role: Role): User
     deleteUser(id: ID!): User
 }

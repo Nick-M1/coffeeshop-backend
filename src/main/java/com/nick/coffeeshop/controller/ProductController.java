@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @Validated
@@ -63,8 +62,10 @@ public class ProductController {
             @Argument @PositiveOrZero Long id,
             @Argument Optional<@Size(min = 2, max = 50) String> name,
             @Argument Optional<ProductSize> productSize,
-            @Argument Optional<ProductType> productType) {
-        return productService.update(id, name, productSize, productType);
+            @Argument Optional<ProductType> productType,
+            @Argument Optional<@PositiveOrZero BigDecimal> price,
+            @Argument Optional<String> img) {
+        return productService.update(id, name, productSize, productType, price, img);
     }
 
     @MutationMapping
